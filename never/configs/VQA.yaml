@@ -1,0 +1,44 @@
+experiment: "VQA"
+
+train_file:
+  [
+    "tcl_data/vqa_train.arrow.json",
+    "tcl_data/vqa_val.arrow.json",
+    "tcl_data/vg_qa.arrow.json",
+  ]
+# test_file: ["tcl_data/vqa_test_dev.arrow.json"]
+test_file: ["tcl_data/vqa_test.arrow.json"]
+
+answer_list: "tcl_data/answer_list.json"
+
+# no influence if arrow files are provided
+vqa_root: "../data/VQA/Images/mscoco/" #train2014/
+vg_root: "../data/VG/VG_100K/" #image/
+
+image_res: 384
+batch_size_train: 16
+batch_size_test: 16
+k_test: 128
+
+alpha: 0.4
+distill: True
+warm_up: True
+
+eos: "[SEP]"
+
+bert_config: "never/configs/config_bert.json"
+text_encoder: "pretrained/bert-base-uncased"
+text_decoder: "pretrained/bert-base-uncased"
+
+optimizer: { opt: adamW, lr: 2e-5, weight_decay: 0.02 }
+schedular:
+  {
+    sched: cosine,
+    lr: 2e-5,
+    epochs: 8,
+    min_lr: 1e-6,
+    decay_rate: 1,
+    warmup_lr: 1e-5,
+    warmup_epochs: 4,
+    cooldown_epochs: 0,
+  }

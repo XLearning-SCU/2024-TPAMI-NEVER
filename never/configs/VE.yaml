@@ -1,0 +1,32 @@
+experiment: "VE"
+
+train_file: "tcl_data/ve_train.arrow.json"
+val_file: "tcl_data/ve_dev.arrow.json"
+test_file: "tcl_data/ve_test.arrow.json"
+
+# no influence if arrow files are provided
+image_root: "../data/Flickr/flickr30k-images/"
+
+image_res: 384
+batch_size_train: 16
+batch_size_test: 64
+
+alpha: 0.4
+distill: True
+warm_up: False
+
+bert_config: "never/configs/config_bert.json"
+text_encoder: "pretrained/bert-base-uncased"
+
+optimizer: { opt: adamW, lr: 2e-5, weight_decay: 0.02 }
+schedular:
+  {
+    sched: cosine,
+    lr: 2e-5,
+    epochs: 5,
+    min_lr: 1e-6,
+    decay_rate: 1,
+    warmup_lr: 1e-5,
+    warmup_epochs: 1,
+    cooldown_epochs: 0,
+  }

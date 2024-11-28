@@ -1,0 +1,32 @@
+experiment: "NLVR"
+
+train_file: "tcl_data/nlvr_train.arrow.json"
+val_file: "tcl_data/nlvr_dev.arrow.json"
+test_file: "tcl_data/nlvr_test.arrow.json"
+
+# no influence if arrow files are provided
+image_root: "../data/nlvr2/"
+
+image_res: 384
+batch_size: 8
+
+bert_config: "never/configs/config_bert.json"
+text_encoder: "pretrained/bert-base-uncased"
+
+alpha: 0.4
+distill: True
+warm_up: True
+eval_ema: False
+
+optimizer: { opt: adamW, lr: 2e-5, weight_decay: 0.02 }
+schedular:
+  {
+    sched: cosine,
+    lr: 2e-5,
+    epochs: 10,
+    min_lr: 1e-6,
+    decay_rate: 1,
+    warmup_lr: 1e-5,
+    warmup_epochs: 1,
+    cooldown_epochs: 0,
+  }

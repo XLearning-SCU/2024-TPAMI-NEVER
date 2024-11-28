@@ -1,0 +1,43 @@
+experiment: "Grounding"
+
+train_file: ["tcl_data/refcoco+_train.arrow.json"]
+test_file:
+  ["tcl_data/refcoco+_val.arrow.json", "tcl_data/refcoco+_test.arrow.json"]
+
+# refcoco+ dir
+refcoco_data: "tcl_data"
+
+det_file: "tcl_data/refcoco+/dets.json"
+coco_file: "tcl_data/refcoco+/cocos.json"
+
+# no influence if arrow files are provided
+image_root: "../data/MSCOCO/"
+
+bert_config: "never/configs/config_bert.json"
+text_encoder: "pretrained/bert-base-uncased"
+
+image_res: 384
+batch_size: 16
+
+queue_size: 65536
+momentum: 0.995
+vision_width: 768
+embed_dim: 256
+temp: 0.07
+
+alpha: 0.4
+distill: True
+warm_up: True
+
+optimizer: { opt: adamW, lr: 1e-5, weight_decay: 0.02 }
+schedular:
+  {
+    sched: cosine,
+    lr: 1e-5,
+    epochs: 5,
+    min_lr: 1e-6,
+    decay_rate: 1,
+    warmup_lr: 1e-5,
+    warmup_epochs: 1,
+    cooldown_epochs: 0,
+  }
